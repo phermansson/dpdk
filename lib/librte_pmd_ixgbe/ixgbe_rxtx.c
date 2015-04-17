@@ -2504,7 +2504,7 @@ ixgbe_dev_rx_queue_setup(struct rte_eth_dev *dev,
 	struct ixgbe_rx_queue *rxq;
 	struct ixgbe_hw     *hw;
 	uint16_t len;
-	struct rte_eth_dev_info dev_info = { 0 };
+	struct rte_eth_dev_info dev_info = { .rx_offload_capa = 0 };
 	struct rte_eth_rxmode *dev_rx_mode = &dev->data->dev_conf.rxmode;
 	bool rsc_requested = false;
 
@@ -4067,7 +4067,7 @@ ixgbe_set_rsc(struct rte_eth_dev *dev)
 {
 	struct rte_eth_rxmode *rx_conf = &dev->data->dev_conf.rxmode;
 	struct ixgbe_hw *hw = IXGBE_DEV_PRIVATE_TO_HW(dev->data->dev_private);
-	struct rte_eth_dev_info dev_info = { 0 };
+	struct rte_eth_dev_info dev_info = { .rx_offload_capa=0 };
 	bool rsc_capable = false;
 	uint16_t i;
 	uint32_t rdrxctl;
