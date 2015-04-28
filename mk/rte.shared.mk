@@ -60,10 +60,10 @@ exe2cmd = $(strip $(call dotfile,$(patsubst %,%.cmd,$(1))))
 ifeq ($(LINK_USING_CC),1)
 override EXTRA_LDFLAGS := $(call linkerprefix,$(EXTRA_LDFLAGS))
 O_TO_SO = $(CC) $(call linkerprefix,$(LDFLAGS)) $(LDFLAGS_$(@)) $(EXTRA_LDFLAGS) \
-	-shared -o $@ $(OBJS-y) $(call linkerprefix,$(LDLIBS))
+	-shared -o $@ $(OBJS-y) $(call linkerprefix,$(LDLIBS-y))
 else
 O_TO_SO = $(LD) $(LDFLAGS) $(LDFLAGS_$(@)) $(EXTRA_LDFLAGS) \
-	-shared -o $@ $(OBJS-y) $(LDLIBS)
+	-shared -o $@ $(OBJS-y) $(LDLIBS-y)
 endif
 
 O_TO_SO_STR = $(subst ','\'',$(O_TO_SO)) #'# fix syntax highlight
@@ -77,12 +77,12 @@ O_TO_SO_DO = @set -e; \
 -include .$(SHARED).cmd
 
 # path where libraries are retrieved
-LDLIBS_PATH := $(subst -Wl$(comma)-L,,$(filter -Wl$(comma)-L%,$(LDLIBS)))
-LDLIBS_PATH += $(subst -L,,$(filter -L%,$(LDLIBS)))
+LDLIBS_PATH := $(subst -Wl$(comma)-L,,$(filter -Wl$(comma)-L%,$(LDLIBS-y)))
+LDLIBS_PATH += $(subst -L,,$(filter -L%,$(LDLIBS-y)))
 
 # list of .a files that are linked to this application
-LDLIBS_NAMES := $(patsubst -l%,lib%.a,$(filter -l%,$(LDLIBS)))
-LDLIBS_NAMES += $(patsubst -Wl$(comma)-l%,lib%.a,$(filter -Wl$(comma)-l%,$(LDLIBS)))
+LDLIBS_NAMES := $(patsubst -l%,lib%.a,$(filter -l%,$(LDLIBS-y)))
+LDLIBS_NAMES += $(patsubst -Wl$(comma)-l%,lib%.a,$(filter -Wl$(comma)-l%,$(LDLIBS-y)))
 
 # list of found libraries files (useful for deps). If not found, the
 # library is silently ignored and dep won't be checked

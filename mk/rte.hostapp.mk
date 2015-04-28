@@ -58,7 +58,7 @@ build: _postbuild
 exe2cmd = $(strip $(call dotfile,$(patsubst %,%.cmd,$(1))))
 
 O_TO_EXE = $(HOSTCC) $(HOST_LDFLAGS) $(LDFLAGS_$(@)) \
-	$(EXTRA_HOST_LDFLAGS) -o $@ $(OBJS-y) $(LDLIBS)
+	$(EXTRA_HOST_LDFLAGS) -o $@ $(OBJS-y) $(LDLIBS-y)
 O_TO_EXE_STR = $(subst ','\'',$(O_TO_EXE)) #'# fix syntax highlight
 O_TO_EXE_DISP = $(if $(V),"$(O_TO_EXE_STR)","  HOSTLD $(@)")
 O_TO_EXE_CMD = "cmd_$@ = $(O_TO_EXE_STR)"
@@ -72,7 +72,7 @@ O_TO_EXE_DO = @set -e; \
 # list of .a files that are linked to this application
 LDLIBS_FILES := $(wildcard \
 	$(addprefix $(RTE_OUTPUT)/lib/, \
-	$(patsubst -l%,lib%.a,$(filter -l%,$(LDLIBS)))))
+	$(patsubst -l%,lib%.a,$(filter -l%,$(LDLIBS-y)))))
 
 #
 # Compile executable file if needed
