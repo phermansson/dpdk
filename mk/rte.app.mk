@@ -1,7 +1,7 @@
 #   BSD LICENSE
 #
 #   Copyright(c) 2010-2015 Intel Corporation. All rights reserved.
-#   Copyright(c) 2015 6WIND S.A.
+#   Copyright(c) 2014-2015 6WIND S.A.
 #   All rights reserved.
 #
 #   Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ LDSCRIPT = $(RTE_LDSCRIPT)
 endif
 
 # default path for libs
-LDLIBS-y = -L$(RTE_SDK_BIN)/lib
+LDLIBS-y += -L$(RTE_SDK_BIN)/lib
 
 #
 # Include libraries depending on config if NO_AUTOLIBS is not set
