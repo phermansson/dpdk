@@ -77,8 +77,8 @@ else
 ICP_LIBRARY_PATH = $(ICP_ROOT)/build/libicp_qa_al.a
 endif
 
-LDLIBS += -L$(ICP_ROOT)/build
-LDLIBS += $(ICP_LIBRARY_PATH) \
+EXTRA_LDLIBS += -L$(ICP_ROOT)/build
+EXTRA_LDLIBS += $(ICP_LIBRARY_PATH) \
                 -lz \
                 -losal \
                 -ladf_proxy \
