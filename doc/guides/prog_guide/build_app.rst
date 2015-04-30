@@ -123,6 +123,6 @@ chapter for details.
 
 *   CPPFLAGS: The flags to use to provide flags to the C preprocessor (only useful when assembling .S files)
 
-*   LDLIBS: A list of libraries to link with (for example, -L /path/to/libfoo - lfoo)
+*   LDLIBS-y: A list of libraries to link with (for example, -L /path/to/libfoo - lfoo) Use EXTRA_LDLIBS to add more options.
 
 *   NO_AUTOLIBS: If set, the libraries provided by the framework will not be included in the LDLIBS variable automatically.
