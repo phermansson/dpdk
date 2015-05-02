@@ -6,3 +6,4 @@ This repo/dpdk-org site is a sandbox for playing with GitHub to understand its l
 
 The real site is located at http://dpdk.org
 
+Wiki site is at: http://dpdk-org.github.io/dpdk
