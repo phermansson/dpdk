@@ -1,0 +1,15 @@
+language: c
+
+sudo: required
+
+compiler:
+  - gcc
+  - clang
+
+install:
+  - sudo apt-get update
+  - sudo apt-get install linux-headers-generic
+  - sudo ln -s /lib/modules/*-generic /lib/modules/$(uname -r)
+
+script:
+  - make T=x86_64-native-linuxapp-$CC install
