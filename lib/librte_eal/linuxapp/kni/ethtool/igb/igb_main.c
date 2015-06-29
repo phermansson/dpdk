@@ -2249,8 +2249,14 @@ static int igb_ndo_bridge_setlink(struct net_device *dev,
 }
 
 #ifdef HAVE_BRIDGE_FILTER
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0)
 static int igb_ndo_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
 				  struct net_device *dev, u32 filter_mask)
+#else
+static int igb_ndo_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+				  struct net_device *dev, u32 filter_mask,
+				  int nlflags)
+#endif /* Linux < 4.1.0 */
 #else
 static int igb_ndo_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
 				  struct net_device *dev)
@@ -2268,7 +2274,11 @@ static int igb_ndo_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
 		mode = BRIDGE_MODE_VEPA;
 
 #ifdef HAVE_NDO_FDB_ADD_VID
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0)
 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev, mode, 0, 0);
+#else
+	return ndo_dflt_bridge_getlink(skb, pid, seq, dev, mode, 0, 0, nlflags);
+#endif /* Linux < 4.1.0 */
 #else
 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev, mode);
 #endif /* HAVE_NDO_FDB_ADD_VID */
