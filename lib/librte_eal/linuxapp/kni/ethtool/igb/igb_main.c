@@ -2198,8 +2198,13 @@ static int igb_ndo_fdb_dump(struct sk_buff *skb,
 #endif /* USE_DEFAULT_FDB_DEL_DUMP */
 
 #ifdef HAVE_BRIDGE_ATTRIBS
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,0,0)
 static int igb_ndo_bridge_setlink(struct net_device *dev,
 				  struct nlmsghdr *nlh)
+#else
+static int igb_ndo_bridge_setlink(struct net_device *dev,
+				  struct nlmsghdr *nlh, u16 flags)
+#endif /* Linux < 4.0.0 */
 {
 	struct igb_adapter *adapter = netdev_priv(dev);
 	struct e1000_hw *hw = &adapter->hw;
@@ -5425,6 +5430,24 @@ static inline int igb_maybe_stop_tx(struct igb_ring *tx_ring, const u16 size)
 	return __igb_maybe_stop_tx(tx_ring, size);
 }
 
+static inline bool igb_skb_vlan_tag_present(struct sk_buff *skb)
+{
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,0,0)
+	return vlan_tx_tag_present(skb);
+#else
+	return skb_vlan_tag_present(skb);
+#endif /* Linux < 4.0.0 */
+}
+
+static inline u16 igb_skb_vlan_tag_get(struct sk_buff *skb)
+{
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,0,0)
+	return vlan_tx_tag_get(skb);
+#else
+	return skb_vlan_tag_get(skb);
+#endif /* Linux < 4.0.0 */
+}
+
 netdev_tx_t igb_xmit_frame_ring(struct sk_buff *skb,
 				struct igb_ring *tx_ring)
 {
@@ -5478,10 +5501,9 @@ netdev_tx_t igb_xmit_frame_ring(struct sk_buff *skb,
 		}
 	}
 #endif /* HAVE_PTP_1588_CLOCK */
-
-	if (vlan_tx_tag_present(skb)) {
+	if (igb_skb_vlan_tag_present(skb)) {
 		tx_flags |= IGB_TX_FLAGS_VLAN;
-		tx_flags |= (vlan_tx_tag_get(skb) << IGB_TX_FLAGS_VLAN_SHIFT);
+		tx_flags |= (igb_skb_vlan_tag_get(skb) << IGB_TX_FLAGS_VLAN_SHIFT);
 	}
 
 	/* record initial flags and protocol */
