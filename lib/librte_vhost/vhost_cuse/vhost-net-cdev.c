@@ -52,7 +52,11 @@
 #define FUSE_OPT_FORE  "-f\0\0"
 #define FUSE_OPT_NOMULTI "-s\0\0"
 
-static const uint32_t default_major = 231;
+/*
+ * Default major to zero and let the kernel dynamically allocate
+ * a major for us.
+ */
+static const uint32_t default_major = 0;
 static const uint32_t default_minor = 1;
 static const char cuse_device_name[] = "/dev/cuse";
 static const char default_cdev[] = "vhost-net";
